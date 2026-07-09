@@ -3,13 +3,13 @@ requires = ["setuptools>=68", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "clock"
+name = "chrono"
 dynamic = ["version"]
-description = "Clock utilities"
+description = "Time related utilities"
 requires-python = ">=3.9"
 dependencies = []
 
 [tool.setuptools.packages.find]
-include = ["clock*"]
+include = ["chrono*"]
 
 [tool.setuptools_scm]
