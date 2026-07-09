@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clock"
+dynamic = ["version"]
+description = "Clock utilities"
+requires-python = ">=3.9"
+dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["clock*"]
+
+[tool.setuptools_scm]
