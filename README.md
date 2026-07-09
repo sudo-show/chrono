@@ -7,7 +7,7 @@ Small async timing helpers.
 Sleeps until the next occurrence of a specific wall-clock time. Timezone-aware — handles DST correctly. If the target time has already passed today, it rolls to tomorrow automatically.
 
 ```python
-from waiter import wait_until
+from chrono import wait_until
 
 await wait_until(9, 0, timezone="Europe/Berlin")          # sleep until next 9:00 Berlin time
 await wait_until(9, 0, offset_minutes=-5, timezone="Europe/Berlin")  # 8:55 Berlin time
@@ -20,7 +20,7 @@ Raises `ValueError` if `timezone` isn't provided.
 Sleeps for a fixed duration. `units` is one of `"s"`, `"m"`, `"h"`, `"d"` — defaults to seconds.
 
 ```python
-from waiter import wait_for
+from chrono import wait_for
 
 await wait_for(30)          # 30 seconds
 await wait_for(5, "m")      # 5 minutes
@@ -32,7 +32,7 @@ await wait_for(2, "h")      # 2 hours
 Measures elapsed time between `start()` and `stop()`.
 
 ```python
-from stopwatch import Stopwatch
+from chrono import Stopwatch
 
 sw = Stopwatch()
 sw.start()
