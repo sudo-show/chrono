@@ -1,4 +1,4 @@
-# waiter / stopwatch
+# chrono
 
 Small async timing helpers.
 
