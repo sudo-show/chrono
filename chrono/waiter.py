@@ -29,16 +29,16 @@ async def wait_until(hour: int, minute: int, offset_minutes: int = 0, timezone: 
     logger.info(f"Waiting until {target}")
     await asyncio.sleep((target - now).total_seconds())
 
-async def wait_for(self, wait_time: int, units: Literal["s", "m", "h", "d"] = "s"):
+async def wait_for(time: int, units: Literal["s", "m", "h", "d"] = "s"):
     if units == "m":
-        wait_seconds = wait_time * 60
+        wait_seconds = time * 60
         units = "minutes"
     elif units == "h":
-        wait_seconds = wait_time * 3600
+        wait_seconds = time * 3600
         units = "hours"
     elif units == "d":
-        wait_seconds = wait_time * 86400
+        wait_seconds = time * 86400
         units = "days"
 
-    logger.info(f"Waiting {wait_time} {units}")
+    logger.info(f"Waiting for {time} {units}")
     await asyncio.sleep(wait_seconds)
