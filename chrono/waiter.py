@@ -30,7 +30,10 @@ async def wait_until(hour: int, minute: int, offset_minutes: int = 0, timezone: 
     await asyncio.sleep((target - now).total_seconds())
 
 async def wait_for(time: int, units: Literal["s", "m", "h", "d"] = "s"):
-    if units == "m":
+    if units == "s":
+        wait_seconds = time
+        units = "seconds"
+    elif units == "m":
         wait_seconds = time * 60
         units = "minutes"
     elif units == "h":
