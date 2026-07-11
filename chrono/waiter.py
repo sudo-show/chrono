@@ -43,5 +43,5 @@ async def wait_for(time: int, units: Literal["s", "m", "h", "d"] = "s"):
         wait_seconds = time * 86400
         units = "days"
 
-    logger.info(f"Waiting for {time} {units}")
+    logger.debug(f"Waiting for {time} {units:.2f}")
     await asyncio.sleep(wait_seconds)
