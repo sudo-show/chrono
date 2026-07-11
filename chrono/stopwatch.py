@@ -23,7 +23,7 @@ class Stopwatch:
         time_interval = end_time - self.start_time
         self.start_time = None
 
-        self.logger.debug(f"Stopwatch stopped after {time_interval:.2f}s")
+        self.logger.debug(f"Stopwatch stopped after {time_interval}s")
         return time_interval
 
     # Return how much time has gone.
