@@ -12,7 +12,7 @@ class Stopwatch:
         if self.start_time is not None:
             raise RuntimeError("Can't start the stopwatch: Another stopwatch is already running in this Stopwatch instance. Stop it first.")
         self.start_time = time.time()
-        self.logger.info("Stopwatch started")
+        self.logger.debug("Stopwatch started")
 
     # Stop the stopwatch and return time.
     def stop(self):
@@ -23,7 +23,7 @@ class Stopwatch:
         time_interval = end_time - self.start_time
         self.start_time = None
 
-        self.logger.info(f"Stopwatch stopped after {time_interval:.2f}s")
+        self.logger.debug(f"Stopwatch stopped after {time_interval:.2f}s")
         return time_interval
 
     # Return how much time has gone.
