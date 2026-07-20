@@ -1,47 +1,43 @@
-#waiter.py
-import logging
+# waiter.py
 import asyncio
-from datetime import datetime, timedelta
-from zoneinfo import ZoneInfo
+import logging
+from datetime import datetime
 from typing import Literal
 
+from .time_parser import to_datetime
 
 logger = logging.getLogger(__name__)
 
+_UNITS = {
+    "s": (1, "seconds"),
+    "m": (60, "minutes"),
+    "h": (3600, "hours"),
+    "d": (86400, "days"),
+}
 
-async def wait_until(hour: int, minute: int, offset_minutes: int = 0, timezone: str = None):
-    if timezone is None:
-        raise ValueError("No timezone provided")
 
-    now = datetime.now(ZoneInfo(timezone))
+async def wait_until(date=None, time=None, day_offset: int = 0, timezone=None):
+    """Sleep until the given date and time.
 
-    target = now.replace(
-        hour=hour,
-        minute=minute,
-        second=0,
-        microsecond=0,
-    ) + timedelta(minutes=offset_minutes)
+    Arguments match `to_datetime`. Returns immediately if the target
+    is already past.
+    """
+    target = to_datetime(date=date, time=time, day_offset=day_offset, timezone=timezone)
 
-    # Always schedule for the next occurrence
-    if target <= now:
-        target += timedelta(days=1)
+    delay = (target - datetime.now(target.tzinfo)).total_seconds()
+    if delay <= 0:
+        target = to_datetime(date=target.date(), time=target.time(),
+                             day_offset=1, timezone=str(target.tzinfo))
 
-    logger.info(f"Waiting until {target}")
-    await asyncio.sleep((target - now).total_seconds())
+    logger.info(f"Waiting until {target} ({delay:.1f}s).")
+    await asyncio.sleep(delay)
 
-async def wait_for(time: int, units: Literal["s", "m", "h", "d"] = "s"):
-    if units == "s":
-        wait_seconds = time
-        units = "seconds"
-    elif units == "m":
-        wait_seconds = time * 60
-        units = "minutes"
-    elif units == "h":
-        wait_seconds = time * 3600
-        units = "hours"
-    elif units == "d":
-        wait_seconds = time * 86400
-        units = "days"
 
-    logger.debug(f"Waiting for {time} {units:.2f}")
-    await asyncio.sleep(wait_seconds)
+async def wait_for(duration: float, units: Literal["s", "m", "h", "d"] = "s"):
+    """Sleep for `duration` in the given units."""
+    if units not in _UNITS:
+        raise ValueError(f"Unknown unit {units!r}: expected one of {sorted(_UNITS)}.")
+
+    factor, name = _UNITS[units]
+    logger.debug(f"Waiting for {duration:.2f} {name}.")
+    await asyncio.sleep(duration * factor)
